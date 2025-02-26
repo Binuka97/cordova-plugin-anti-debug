@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="cordova-plugin-anti-debug"
+        version="1.0.0">
+    
+    <name>AntiDebug</name>
+    <description>Detects debugger and prevents debugging/hooking.</description>
+    <license>MIT</license>
+    
+    <js-module src="www/antiDebug.js" name="AntiDebug">
+        <clobbers target="AntiDebug" />
+    </js-module>
+
+    <platform name="android">
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <android:debuggable="false"/>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.READ_SECURE_SETTINGS"/>
+        </config-file>
+        <source-file src="src/android/AntiDebug.java" target-dir="src/com/example/antidebug/" />
+    </platform>
+
+    <platform name="ios">
+        <source-file src="src/ios/AntiDebug.m" />
+        <source-file src="src/ios/AntiDebug.h" />
+    </platform>
+</plugin>

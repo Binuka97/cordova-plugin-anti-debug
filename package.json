@@ -1,0 +1,39 @@
+{
+    "name": "cordova-plugin-anti-debug",
+    "version": "1.0.0",
+    "description": "A Cordova plugin to detect and prevent debuggers, detect developer options, and implement anti-debugging techniques for Android and iOS.",
+    "license": "MIT",
+    "author": "Binuka Kamesh",
+    "keywords": [
+      "cordova",
+      "plugin",
+      "debug",
+      "anti-debug",
+      "security",
+      "android",
+      "ios",
+      "anti-hooking"
+    ],
+    "repository": {
+      "type": "git",
+      "url": "https://github.com/your-repo/cordova-plugin-anti-debug.git"
+    },
+    "engines": {
+      "cordova": ">=10.0.0",
+      "cordova-android": ">=10.0.0",
+      "cordova-ios": ">=6.0.0"
+    },
+    "platforms": [
+      "android",
+      "ios"
+    ],
+    "dependencies": {},
+    "cordova": {
+      "id": "cordova-plugin-anti-debug",
+      "platforms": [
+        "android",
+        "ios"
+      ]
+    }
+  }
+  
