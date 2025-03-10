@@ -43,7 +43,8 @@ public class AntiDebug extends CordovaPlugin {
 
     private void preventDebuggerAttach() {
         try {
-            Os.ptrace(OsConstants.PT_DENY_ATTACH, 0, 0, 0);
+            // Prevent debugger attach (Non-rooted method)
+            Os.prctl(OsConstants.PR_SET_DUMPABLE, 0);  // Stronger debugger prevention
         } catch (Exception e) {
             Log.e("AntiDebug", "Failed to prevent debugger attach", e);
         }
@@ -77,6 +78,22 @@ public class AntiDebug extends CordovaPlugin {
         } catch (IOException e) {
             Log.e("AntiDebug", "Error reading memory maps", e);
         }
+
+        // Add additional checks (e.g., known debugger processes or loaded libraries)
+        try {
+            Process process = Runtime.getRuntime().exec("ps -A");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("frida") || line.contains("gdb") || line.contains("ptrace")) {
+                    Log.w("AntiDebug", "Detected debugger or tampering process: " + line);
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            Log.e("AntiDebug", "Error running ps command", e);
+        }
+
         return false;
     }
 

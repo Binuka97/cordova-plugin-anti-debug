@@ -14,17 +14,12 @@
     </engines>
 
     <platform name="android">
-        <config-file target="AndroidManifest.xml" parent="/manifest">
-            <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-        </config-file>
-
         <source-file src="src/android/AntiDebug.java" target-dir="com/example/antidebug/" />
     </platform>
 
     <platform name="ios">
         <source-file src="src/ios/AntiDebug.m" />
         <source-file src="src/ios/AntiDebug.h" />
-        <framework src="Security.framework" />
     </platform>
 
     <js-module src="www/antiDebug.js" name="AntiDebug">
