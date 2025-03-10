@@ -37,44 +37,72 @@ public class AntiDebug extends CordovaPlugin {
         return false;
     }
 
-    // Detect if a debugger is attached
     private boolean isDebuggerAttached() {
         return Debug.isDebuggerConnected() || Debug.waitingForDebugger() || detectTracerPid();
     }
 
-    // Prevent debugger from attaching using ptrace
     private void preventDebuggerAttach() {
         try {
-            Os.prctl(OsConstants.PR_SET_DUMPABLE, 0); // Stronger debugger prevention
+            Os.ptrace(OsConstants.PT_DENY_ATTACH, 0, 0, 0);
         } catch (Exception e) {
             Log.e("AntiDebug", "Failed to prevent debugger attach", e);
         }
     }
 
-    // Check if the process is being traced (TracerPid)
     private boolean detectTracerPid() {
         try (BufferedReader reader = new BufferedReader(new FileReader("/proc/self/status"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("TracerPid:")) {
-                    int tracerPid = Integer.parseInt(line.split("\\s+")[1]); // Improved parsing
+                    int tracerPid = Integer.parseInt(line.split("\\s+")[1]);
                     return tracerPid > 0;
                 }
             }
         } catch (IOException e) {
             Log.e("AntiDebug", "Error reading TracerPid", e);
         }
+
+        return detectTamperedMemory();
+    }
+
+    private boolean detectTamperedMemory() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("/proc/self/maps"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.contains("frida") || line.contains("gdb") || line.contains("ptrace")) {
+                    Log.w("AntiDebug", "Memory tampering detected!");
+                    return true;
+                }
+            }
+        } catch (IOException e) {
+            Log.e("AntiDebug", "Error reading memory maps", e);
+        }
         return false;
     }
 
-    // Detect if Developer Options are enabled
     private boolean isDevOptionsEnabled() {
         Context context = cordova.getActivity().getApplicationContext();
+        int devOptionsEnabled = 0;
+        int adbEnabled = 0;
+
         try {
-            return Settings.Secure.getInt(context.getContentResolver(), Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0) != 0;
+            devOptionsEnabled = Settings.Secure.getInt(
+                context.getContentResolver(),
+                Settings.Global.DEVELOPMENT_SETTINGS_ENABLED, 0
+            );
         } catch (Exception e) {
             Log.e("AntiDebug", "Error checking Developer Options", e);
-            return false;
         }
+
+        try {
+            adbEnabled = Settings.Global.getInt(
+                context.getContentResolver(),
+                Settings.Global.ADB_ENABLED, 0
+            );
+        } catch (Exception e) {
+            Log.e("AntiDebug", "Error checking ADB status", e);
+        }
+
+        return devOptionsEnabled != 0 || adbEnabled != 0;
     }
 }
