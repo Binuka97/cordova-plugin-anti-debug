@@ -6,18 +6,18 @@
     <name>AntiDebug</name>
     <description>Detects debugger and prevents debugging/hooking.</description>
     <license>MIT</license>
-    
-    <js-module src="www/antiDebug.js" name="AntiDebug">
-        <clobbers target="AntiDebug" />
-    </js-module>
-
+    <keywords>cordova, dev options check, anti debug, security</keywords>
+    <engines>
+        <engine name="cordova" version=">=10.0.0"/>
+    </engines>
     <platform name="android">
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <android:debuggable="false"/>
+            <application android:debuggable="false"/>
         </config-file>
         <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.READ_SECURE_SETTINGS"/>
         </config-file>
+        
         <source-file src="src/android/AntiDebug.java" target-dir="src/com/example/antidebug/" />
     </platform>
 
@@ -25,4 +25,8 @@
         <source-file src="src/ios/AntiDebug.m" />
         <source-file src="src/ios/AntiDebug.h" />
     </platform>
+
+    <js-module src="www/antiDebug.js" name="AntiDebug">
+        <clobbers target="AntiDebug" />
+    </js-module>
 </plugin>

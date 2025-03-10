@@ -1,5 +1,3 @@
-var exec = require('cordova/exec');
-
 var AntiDebug = {
     isDebugged: function(successCallback, errorCallback) {
         exec(successCallback, errorCallback, "AntiDebug", "isDebugged", []);

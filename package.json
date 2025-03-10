@@ -3,7 +3,6 @@
     "version": "1.0.0",
     "description": "A Cordova plugin to detect and prevent debuggers, detect developer options, and implement anti-debugging techniques for Android and iOS.",
     "license": "MIT",
-    "author": "Binuka Kamesh",
     "keywords": [
       "cordova",
       "plugin",
@@ -16,7 +15,7 @@
     ],
     "repository": {
       "type": "git",
-      "url": "https://github.com/your-repo/cordova-plugin-anti-debug.git"
+      "url": "https://github.com/Binuka97/cordova-plugin-anti-debug.git"
     },
     "engines": {
       "cordova": ">=10.0.0",
@@ -28,12 +27,21 @@
       "ios"
     ],
     "dependencies": {},
+    "author": {
+        "name": "Binuka Kamesh",
+        "email": "binukakamesh97@gmail.com",
+        "url": "https://github.com/Binuka97"
+    },
     "cordova": {
       "id": "cordova-plugin-anti-debug",
       "platforms": [
         "android",
         "ios"
       ]
-    }
+    },
+    "bugs": {
+        "url": "https://github.com/Binuka97/cordova-plugin-anti-debug/issues"
+    },
+    "homepage": "https://github.com/Binuka97/cordova-plugin-anti-debug/blob/main/README.md"
   }
   
