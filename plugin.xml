@@ -13,7 +13,7 @@
     </engines>
     <platform name="android">
         <config-file target="AndroidManifest.xml" parent="/manifest/application">
-            <application android:debuggable="false"/>
+            <android:debuggable="false"/>
         </config-file>
         <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.READ_SECURE_SETTINGS"/>
