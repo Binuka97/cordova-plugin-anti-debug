@@ -16,6 +16,7 @@ import org.json.JSONException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class AntiDebug extends CordovaPlugin {
 
@@ -44,7 +45,7 @@ public class AntiDebug extends CordovaPlugin {
     private void preventDebuggerAttach() {
         try {
             // Prevent debugger attach (Non-rooted method)
-            Os.prctl(OsConstants.PR_SET_DUMPABLE, 0);  // Stronger debugger prevention
+            Os.prctl(OsConstants.PR_SET_DUMPABLE, 0, 0, 0, 0);  // Stronger debugger prevention
         } catch (Exception e) {
             Log.e("AntiDebug", "Failed to prevent debugger attach", e);
         }
